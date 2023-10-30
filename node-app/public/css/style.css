@@ -5,7 +5,7 @@
 }
 
 .bg-gradient {
-    background-image: radial-gradient(at 72% 88%, #b144ca 0, transparent 50%), radial-gradient(at 30% 80%, #4949ca 0, transparent 50%), radial-gradient(at 98% 8%, #5c6bca 0, transparent 50%), radial-gradient(at 9% 13%, #bd60ca 0, transparent 50%);
+    background-image: radial-gradient(at 72% 88%, #1b3b1c 0, transparent 55%), radial-gradient(at 30% 80%, #51523a 0, transparent 55%), radial-gradient(at 98% 8%, #24442f 0, transparent 55%), radial-gradient(at 9% 13%, #413b21 0, transparent 55%);
 }
 
 .background-noisy {
