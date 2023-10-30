@@ -5,7 +5,7 @@
 }
 
 .bg-gradient {
-    background-image: radial-gradient(at 72% 88%, #1b3b1c 0, transparent 55%), radial-gradient(at 30% 80%, #51523a 0, transparent 55%), radial-gradient(at 98% 8%, #24442f 0, transparent 55%), radial-gradient(at 9% 13%, #413b21 0, transparent 55%);
+    background-image: radial-gradient(at 72% 88%, #6a6a6a 0, transparent 50%), radial-gradient(at 30% 80%, #4e4e4e 0, transparent 50%), radial-gradient(at 98% 8%, #676767 0, transparent 50%), radial-gradient(at 9% 13%, #757575 0, transparent 50%);
 }
 
 .background-noisy {
@@ -23,7 +23,7 @@
 }
 
 .app-name {
-    font-size: 8rem;
+    font-size: 6.5rem;
     line-height: 1;
     color: white;
     font-weight: 700;

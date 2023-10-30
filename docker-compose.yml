@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
    varnish:
@@ -9,16 +9,20 @@ services:
          - "80:80"
       volumes:
          - ./default.vcl:/etc/varnish/default.vcl
+         - ./hit-miss.vcl:/etc/varnish/hit-miss.vcl
       depends_on:
          - web
 
    web:
       build: ./node-app # Build the Docker image from the specified directory
       container_name: node-app
+      environment:
+         - BACKEND_DOMAIN_NAME=${BACKEND_DOMAIN_NAME}
       ports:
          - "8080:8080"
       networks:
          - proxy
+
 networks:
-    proxy:
-        driver: bridge
+   proxy:
+      driver: bridge
