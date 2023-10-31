@@ -10,6 +10,8 @@ services:
       volumes:
          - ./default.vcl:/etc/varnish/default.vcl
          - ./hit-miss.vcl:/etc/varnish/hit-miss.vcl
+      labels:
+         traefik.enable: "true" # Enable Traefik for this container
       depends_on:
          - web
 
@@ -20,6 +22,45 @@ services:
          - BACKEND_DOMAIN_NAME=${BACKEND_DOMAIN_NAME}
       ports:
          - "8080:8080"
+      labels:
+         traefik.enable: "true" # Enable Traefik for this container
+         traefik.http.routers.app.rule: "Host(`${BACKEND_DOMAIN_NAME}`)" # Define a rule for the Traefik router (HTTP only)
+         traefik.http.routers.app.entrypoints: "http" # Use the 'http' entry point
+         traefik.http.routers.app.middlewares: "redirect" # Apply a middleware to redirect to HTTPS
+
+         traefik.http.routers.app-secured.rule: "Host(`${BACKEND_DOMAIN_NAME}`)" # Define a rule for the Traefik router (HTTPS)
+         traefik.http.routers.app-secured.entrypoints: "https" # Use the 'https' entry point
+         traefik.http.routers.app-secured.tls.certresolver: "myresolver" # Use 'myresolver' for TLS
+      networks:
+         - proxy
+
+   traefik:
+      image: traefik:v2.10.5
+      container_name: traefik
+      restart: unless-stopped
+      command:
+         # API Settings
+         - --api.insecure=true # Enable insecure API (Do not use in production)
+         - --api.debug=true # Enable API debugging
+
+         # Log Settings
+         - --log.level=$TRAEFIK_LOG_LEVEL # Set log level (Default: error)
+
+         - "--providers.docker=true"
+         - "--entrypoints.http.address=:80"
+         - "--entrypoints.https.address=:443"
+         - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+         - "--certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}"
+         - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      ports:
+         - "443:443"
+      volumes:
+         - /var/run/docker.sock:/var/run/docker.sock
+         - ./letsencrypt:/letsencrypt
+      labels:
+         traefik.enable: "true" # Enable Traefik for this container
+         # Middleware to redirect HTTP to HTTPS
+         traefik.http.middlewares.redirect.redirectscheme.scheme: "https" # Define a middleware to redirect HTTP to HTTPS
       networks:
          - proxy
 
