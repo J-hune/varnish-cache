@@ -17,6 +17,8 @@ fi
 # Remove unwanted line breaks
 BACKEND_DOMAIN_NAME=$(echo "$BACKEND_DOMAIN_NAME" | tr -d '\n\r')
 BACKEND_PORT=$(echo "$BACKEND_PORT" | tr -d '\n\r')
+VARNISH_TTL=$(echo "$VARNISH_TTL" | tr -d '\n\r') || "5s"
+VARNISH_GRACE=$(echo "$VARNISH_GRACE" | tr -d '\n\r') || "2s"
 
 # Create the default.vcl file with the desired content
 cat <<EOF > default.vcl
@@ -33,12 +35,12 @@ backend default {
 
 sub vcl_backend_response {
 	# We first set TTLs valid for most of the content we need to cache
-	set beresp.ttl = 5s;
-	set beresp.grace = 2s;
+	set beresp.ttl = $VARNISH_TTL;
+	set beresp.grace = $VARNISH_GRACE;
 }
 EOF
 
 echo "The default.vcl file has been successfully created."
 
 # Launch docker-compose
-docker compose up
+docker compose up -d
