@@ -28,6 +28,16 @@
     color: white;
     font-weight: 700;
     font-family: Circular, serif;
+    margin-bottom: 0;
+}
+
+.time {
+    font-size: 3.5rem;
+    line-height: 1;
+    color: #e8e8e8;
+    font-weight: 700;
+    font-family: Circular, serif;
+    margin-top: 50px;
 }
 
 @font-face {
